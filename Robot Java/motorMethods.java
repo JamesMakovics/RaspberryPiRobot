@@ -1,6 +1,6 @@
 
 
-public class KeyboardControl implements InitRobot{
+public class motorMethods implements InitRobot{
 
     public static void moveForward(){
         leftMotorForward.on();
@@ -32,25 +32,5 @@ public class KeyboardControl implements InitRobot{
         leftMotorBackward.off();
         rightMotorBackward.off();
     }
-
-void keyPressed() {
-  final int k = keyCode;
-
-  if (k == ' ' | k == ENTER | k == RETURN)
-
-  else setDirection(k, true);
-}
-
-void keyReleased() {
-  setDirection(keyCode, false);
-}
-
-static final void setDirection(int k, boolean decision) {
-  if      (k == UP    | k == 'W')   moveForward();
-  else if (k == DOWN  | k == 'S')   moveBackward();
-  else if (k == LEFT  | k == 'A')   moveLeft();
-  else if (k == RIGHT | k == 'D')   moveRight();
-  else stop();
-}
 
 }
