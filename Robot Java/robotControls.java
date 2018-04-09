@@ -23,6 +23,8 @@ public class robotControls  implements KeyListener {
            motorMethods.stop();
        }
 }
+
+//This was previous code that may be used later
 // if      (k == UP    | k == 'W')   moveForward();
 // else if (k == DOWN  | k == 'S')   moveBackward();
 // else if (k == LEFT  | k == 'A')   moveLeft();
