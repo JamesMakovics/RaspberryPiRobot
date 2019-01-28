@@ -1,11 +1,9 @@
-#simple control using pygame
-
+#This manages the Pi from the server side
 '''
 imports
 '''
-import curses
 import RPi.GPIO as GPIO
-import pygame
+import time
 GPIO.setmode(GPIO.BCM)
 '''
 Setup of GPIO
@@ -59,38 +57,3 @@ def Stop():#makes the robot motors stop
     GPIO.output(MotorRightForward, False)
     GPIO.output(MotorLeftBackward, False)
     GPIO.output(MotorRightBackward, False)
-
-pygame.init()
-screen = pygame.display.set_mode((480,320))
-pygame.display.set_caption("Robot Driverstation")
-init() #turns motors off from previous run
-print('Welcome to the test Driverstation')
-print("Controls:")
-print("Up Arrow -> moves robot forward")
-print("Down Arrow -> moves robot backward")
-print("Left Arrow -> moves robot left")
-print("Right Arrow -> moves robot right")
-
-try:
-    while True:
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                GPIO.cleanup()
-                pygame.display.quit()
-                pygame.quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE: #Quits the program
-                    break
-                elif event.key == pygame.K_UP: #Moves Robot forward
-                    Forward()
-                elif event.key == pygame.K_DOWN: #Moves Robot Backwards
-                    Backward()
-                elif event.key == pygame.K_LEFT:
-                    Left()
-                elif event.key == pygame.K_RIGHT:
-                    Right()
-            else:
-                Stop()
-finally:
-    GPIO.cleanup()
