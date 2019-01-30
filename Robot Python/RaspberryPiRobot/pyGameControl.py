@@ -20,11 +20,11 @@ UDP_PORT = 5005 #This is the port it connects over
 address = UDP_IP, UDP_PORT
 
 p1 = Process(target=startCamClient)
-  p1.start(UDP_IP, UDP_PORT)
-  p2 = Process(target=startCommandClient)
-  p2.start(UDP_IP, UDP_PORT)
-  p1.join(UDP_IP, UDP_PORT)
-  p2.join(UDP_IP, UDP_PORT)
+p1.start(UDP_IP, UDP_PORT)
+p2 = Process(target=startCommandClient)
+p2.start(UDP_IP, UDP_PORT)
+p1.join(UDP_IP, UDP_PORT)
+p2.join(UDP_IP, UDP_PORT)
 
 #new camera stream
 def startCamClient(UDP_IP, UDP_PORT):

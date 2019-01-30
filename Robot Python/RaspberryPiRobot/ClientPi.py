@@ -18,7 +18,7 @@ cam.start()
 
 #creates a video feed
 image = cam.get_image()
-print = cam.get_size()
+#print = cam.get_size()
 img_str = pygame.image.tostring(image,"RGB")
 
 UDP_IP = "192.168.1.125" #Home ip 192.168.1.30
@@ -26,11 +26,11 @@ UDP_PORT = 5005
 address = UDP_IP,UDP_PORT
 
 p1 = Process(target=startCamServer)
-  p1.start(UDP_IP, UDP_PORT)
-  p2 = Process(target=startCommandServer)
-  p2.start(UDP_IP, UDP_PORT)
-  p1.join(UDP_IP, UDP_PORT)
-  p2.join(UDP_IP, UDP_PORT)
+p1.start(UDP_IP, UDP_PORT)
+p2 = Process(target=startCommandServer)
+p2.start(UDP_IP, UDP_PORT)
+p1.join(UDP_IP, UDP_PORT)
+p2.join(UDP_IP, UDP_PORT)
 
 #creates a video server and attempts to send it over UDP
 def startCamServer(UDP_IP, UDP_PORT):
@@ -43,7 +43,6 @@ def startCamServer(UDP_IP, UDP_PORT):
 
 
     while True:
-
         d = conn.recv(640*480)
 
         if not d:
@@ -62,7 +61,7 @@ def startCamServer(UDP_IP, UDP_PORT):
 def startCommandServer(UDP_IP, UDP_PORT):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
     sock.bind((UDP_IP, UDP_PORT))
-        while True:
-            move, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-            move = move.decode(encoding='UTF-8',errors='strict')
-            setMotors.getDriveCommand(move)
+    while True:
+        move, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+        move = move.decode(encoding='UTF-8',errors='strict')
+        setMotors.getDriveCommand(move)
