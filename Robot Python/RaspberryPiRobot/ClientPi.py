@@ -20,7 +20,7 @@ image = cam.get_image()
 print = cam.get_size()
 img_str = pygame.image.tostring(img,"RGB")
 
-UDP_IP = "10.120.100.0" #Home ip 192.168.1.30
+UDP_IP = "192.168.1.125" #Home ip 192.168.1.30
 UDP_PORT = 5005
 address = UDP_IP,UDP_PORT
 

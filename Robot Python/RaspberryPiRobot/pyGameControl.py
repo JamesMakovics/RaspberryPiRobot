@@ -15,7 +15,7 @@ print("Up Arrow -> moves robot forward")
 print("Down Arrow -> moves robot backward")
 print("Left Arrow -> moves robot left")
 print("Right Arrow -> moves robot right")
-UDP_IP = "10.120.100.0" #This is the ip of the Pi School ip: 10.120.98.209
+UDP_IP = "192.168.1.125" #This is the ip of the Pi School ip: 10.120.98.209
 UDP_PORT = 5005 #This is the port it connects over
 address = UDP_IP, UDP_PORT
 #new camera stream
