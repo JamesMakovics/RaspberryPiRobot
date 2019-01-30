@@ -5,6 +5,8 @@ imports
 '''
 import pygame
 import socket
+import pygame.camera
+from multiprocessing import Process
 
 pygame.init()
 screen = pygame.display.set_mode((480,320))
@@ -18,13 +20,6 @@ print("Right Arrow -> moves robot right")
 UDP_IP = "192.168.1.125" #This is the ip of the Pi School ip: 10.120.98.209
 UDP_PORT = 5005 #This is the port it connects over
 address = UDP_IP, UDP_PORT
-
-p1 = Process(target=startCamClient)
-p1.start(UDP_IP, UDP_PORT)
-p2 = Process(target=startCommandClient)
-p2.start(UDP_IP, UDP_PORT)
-p1.join(UDP_IP, UDP_PORT)
-p2.join(UDP_IP, UDP_PORT)
 
 #new camera stream
 def startCamClient(UDP_IP, UDP_PORT):
@@ -83,3 +78,10 @@ def startCommandClient(UDP_IP, UDP_PORT):
                     sock.sendto(str(move).encode('utf-8'), address)
     finally:
         GPIO.cleanup()
+
+p1 = Process(target=startCamClient)
+p1.start()
+p2 = Process(target=startCommandClient)
+p2.start()
+p1.join(UDP_IP, UDP_PORT)
+p2.join(UDP_IP, UDP_PORT)

@@ -9,6 +9,7 @@ import setMotors
 import robotControllerMethods
 import pygame
 import pygame.camera
+from multiprocessing import Process
 
 #inits pygame with the correct video configs
 pygame.init()
@@ -24,13 +25,6 @@ img_str = pygame.image.tostring(image,"RGB")
 UDP_IP = "192.168.1.125" #Home ip 192.168.1.30
 UDP_PORT = 5005
 address = UDP_IP,UDP_PORT
-
-p1 = Process(target=startCamServer)
-p1.start(UDP_IP, UDP_PORT)
-p2 = Process(target=startCommandServer)
-p2.start(UDP_IP, UDP_PORT)
-p1.join(UDP_IP, UDP_PORT)
-p2.join(UDP_IP, UDP_PORT)
 
 #creates a video server and attempts to send it over UDP
 def startCamServer(UDP_IP, UDP_PORT):
@@ -65,3 +59,10 @@ def startCommandServer(UDP_IP, UDP_PORT):
         move, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
         move = move.decode(encoding='UTF-8',errors='strict')
         setMotors.getDriveCommand(move)
+
+p1 = process(target=startCamServer)
+p1.start()
+p2 = process(target=startCommandServer)
+p2.start()
+p1.join(UDP_IP, UDP_PORT)
+p2.join(UDP_IP, UDP_PORT)
