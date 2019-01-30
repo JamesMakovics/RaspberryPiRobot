@@ -4,13 +4,19 @@
 imports
 '''
 import pygame
-import socket
+import socket, sys #added a sys import for connection
 import pygame.camera
+from PIL import Image
 from multiprocessing import Process
 
 pygame.init()
 screen = pygame.display.set_mode((480,320))
 pygame.display.set_caption("Robot Driverstation")
+font = pygame.font.SysFont("Arial",14)
+clock = pygame.time.Clock()
+timer = 0
+previousImage = ""
+image = ""
 print('Welcome to the test Driverstation')
 print("Controls:")
 print("Up Arrow -> moves robot forward")
@@ -23,9 +29,37 @@ address = UDP_IP, UDP_PORT
 
 #new camera stream
 def startCamClient(UDP_IP, UDP_PORT):
+    '''
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((UDP_IP,UDP_PORT))
     s.listen(1)
+    '''
+    #Receive data
+  if timer < 1:
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((str(ip),UDP_PORT))
+    data = client_socket.recv(1024000)
+    timer = 30
+
+  else:
+    timer -= 1
+  previousImage = image
+
+#Convert image
+  try:
+    image = Image.fromstring("RGB",(320,240),data)
+    image = image.resize((320,240))
+    image = pygame.image.frombuffer(image.tostring(),(320,240),"RGB")
+
+#Interupt
+  except:
+    image = previousImage
+  output = image
+  screen.blit(output,(0,0))
+  clock.tick(60)
+  pygame.display.flip()
+
+    '''
     conn, addr = s.accept()
 
     string = bytes('','UTF-8')
@@ -47,6 +81,7 @@ def startCamClient(UDP_IP, UDP_PORT):
 
         pil_image = Image.fromstring("RGB",(352,288),string)
     #(352,288) is the return of cam.get_size()
+    '''
 
 def startCommandClient(UDP_IP, UDP_PORT):
     try:
